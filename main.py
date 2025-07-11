@@ -3,6 +3,8 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy
 
+from extractFeatures import FeatureExtractor
+
 image_filename = 'cells.jpg'
 
 image_filepath = os.path.join('assets', image_filename)
@@ -22,7 +24,7 @@ def extract_contours(img):
   return contours
 
 
-def extract_features(contours, area=False, circularity=False, solidity=False, intensity=False, size=False, gray_image=''):
+# def extract_features(contours, area=False, circularity=False, solidity=False, intensity=False, size=False, gray_image=''):
   calculated_areas = [cv2.contourArea(c) for c in contours]
   large_contours = []
   calculated_circularity = []
@@ -85,9 +87,9 @@ def extract_features(contours, area=False, circularity=False, solidity=False, in
 def display_large_cells(img):
   contours = extract_contours(img)
 
-  features_result = extract_features(contours, size=True)
+  features = FeatureExtractor(contours)
 
-  large_contours = features_result['large_contours']
+  large_contours = features._detect_large_cells()
 
   img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
   output_image = img_rgb.copy()
